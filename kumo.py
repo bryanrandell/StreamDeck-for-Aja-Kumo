@@ -7,22 +7,8 @@
 # Requires installation of Requests module, can be installed with 'pip install requests'
 
 import requests
-import argparse
 import json
 import sys
-
-parser = argparse.ArgumentParser(description='Set and Get AJA KUMO video router configurations.')
-
-parser.add_argument('-d', '--get_xpt', dest='dest', metavar="CROSSPOINT", type=int, nargs=1,
-					help="Get cross point source for destination")
-
-parser.add_argument('-s', '--set_xpt', dest='source', metavar="CROSSPOINT", type=int, nargs=1,
-					help="Set cross point source for destination (defined by -d)")
-
-parser.add_argument('-a', '--address', dest='kumo', metavar="ADDRESS", type=str, nargs=1,
-					help="IP address or DNS name of KUMO")
-
-args = parser.parse_args()
 
 
 def error(code):
@@ -97,28 +83,3 @@ def kumo_config_main(address='', source=0, destination=0):
 			print(f"\nAJA REMAP CONFIRMATION:\nSource: {j['value']} mapped to destination {str(destination)}\n")
 
 
-if __name__ == '__main__':
-	# try and pull the kumo address. if none defined, exit.
-	try:
-		host = args.kumo[0]
-	except TypeError:
-		host = str(input('\nInput host address: '))
-
-	# try and pull the destination. if none defined, exit.
-	try:
-		dst = args.dest[0]
-	except TypeError:
-		dst = int(input('\nInput destination: '))
-
-	# try and pull the source. if none defined, send false and continue.
-	try:
-		src = args.source[0]
-	except TypeError:
-		src = False
-
-	# Run main program
-	kumo_config_main(
-		address=host,
-		destination=dst,
-		source=src
-	)
